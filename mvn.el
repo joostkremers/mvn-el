@@ -49,8 +49,15 @@ overridden with a file-local or directory-local variable."
   :type 'string)
 (make-variable-buffer-local 'mvn-build-file-name)
 
+(defcustom mvn-show-output-buffer-on-error t
+  "Show the maven output buffer when a command returns with an error."
+  :group 'maven
+  :type '(choice (const :tag "Show the output buffer on error" t)
+                 (const :tag "Do not show the output buffer on error" nil)))
+
 (defvar-local mvn-last-task "compile" "Last mvn task.")
 (defvar mvn-task-history nil "History list of read task(s).")
+(defvar mvn-buffer (get-buffer-create " *maven-output*") "Maven output buffer.")
 
 (defvar mvn-default-phases '("validate"
                           "initialize"
@@ -478,15 +485,23 @@ Additional arguments can also be provided, separated by
   (locate-dominating-file dir mvn-build-file-name))
 
 ;;;###autoload
-(defun mvn (&optional task args)
-  "Run mvn `task` in project root directory."
+(defun mvn (&optional task &rest args)
+  "Run \"mvn TASK\" in the current project's root directory.
+ARGS are added to the mvn command call."
   (interactive)
-  (let ((default-directory (mvn-find-root mvn-build-file-name)))
+  (let ((default-directory (mvn-find-root default-directory)))
     (if default-directory
-        (let ((task (or task (mvn-get-task default-directory))))
+        (let ((task (or task (mvn-get-task))))
           (setq mvn-last-task task)
-          (compile (concat mvn-command " " task " " args)))
-      (message "Couldn't find a maven project."))))
+          (unless (listp task)
+            (setq task (list task)))
+          (let ((res (apply #'call-process mvn-command nil mvn-buffer t (append task args))))
+            (if (= res 0)
+                (message "[mvn] `%s %s' successful." mvn-command task)
+              (when mvn-show-output-buffer-on-error
+                (display-buffer mvn-buffer))
+              (error "[mvn] `%s %s' exited with non-zero exit status" mvn-command task))))
+      (error "[mvn] Could not find a maven project for the current buffer"))))
 
 ;;;###autoload
 (defun mvn-last ()
