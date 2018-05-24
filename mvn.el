@@ -572,6 +572,7 @@ PROJECT is the `artifactId', PACKAGE the `groupId'."
 ;;;###autoload
 (defun mvn-package-and-execute ()
   "Package and execute the current project."
+  (interactive)
   (mvn "package")
   (mvn "exec:java"))
 
