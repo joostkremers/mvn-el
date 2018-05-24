@@ -505,17 +505,19 @@ ARGS are added to the mvn command call."
 
 ;;;###autoload
 (defun mvn-last ()
-  "Run the last maven task in project"
+  "Rerun the last maven task in the current buffer."
   (interactive)
   (mvn (or mvn-last-task "")))
 
 ;;;###autoload
 (defun mvn-compile ()
+  "Compile the current project."
   (interactive)
   (mvn "compile"))
 
 ;;;###autoload
 (defun mvn-clean ()
+  "Clean the current project."
   (interactive)
   (mvn "clean"))
 
