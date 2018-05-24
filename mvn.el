@@ -1,4 +1,4 @@
-;;; mvn.el --- helpers for compiling with maven  -*- lexical-binding: t -*-
+;;; mvn.el --- Helper functions for the maven build tool  -*- lexical-binding: t -*-
 
 ;; Copyright (C) 2013 Andrew Gwozdziewycz <git@apgwoz.com>
 ;; Copyright (C) 2018 Joost Kremers <joostkremers@fastmail.fm>
