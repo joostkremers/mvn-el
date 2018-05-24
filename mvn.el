@@ -523,10 +523,13 @@ ARGS are added to the mvn command call."
 
 ;;;###autoload
 (defun mvn-test (prefix)
-  (interactive "MTest: ")
-  (if prefix
-      (mvn "test" (concat "-Dtest=" prefix))
-    (mvn "test")))
+  "Run the current project's test suite.
+With PREFIX argument non-nil, ask for a test to run."
+  (interactive "P")
+  (if (not prefix)
+      (mvn "test")
+    (let ((test (read-string "Test: ")))
+      (mvn "test" (concat "-Dtest=" test)))))
 
 (provide 'mvn)
 
