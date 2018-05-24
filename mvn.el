@@ -478,11 +478,6 @@ Additional arguments can also be provided, separated by
   (locate-dominating-file dir mvn-build-file-name))
 
 ;;;###autoload
-(defun mvn-kill-cache ()
-  (interactive)
-  (setq *mvn-tasks-cache* '()))
-
-;;;###autoload
 (defun mvn (&optional task args)
   "Run mvn `task` in project root directory."
   (interactive)
