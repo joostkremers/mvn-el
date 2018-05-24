@@ -502,7 +502,7 @@ Additional arguments can also be provided, separated by
     (or mvn-project-root-dir
         (locate-dominating-file dir mvn-build-file-name))))
 
-(defun mvn-get-build-file-arg ()
+(defun mvn-build-file-arg ()
   "Return a build file argument for the current project.
 This is either nil if the default build file name\"pom.xml\" is
 used.  Otherwise, a list of the form `(\"-f\" <build-file-name>)'
