@@ -542,6 +542,12 @@ PROJECT is the `artifactId', PACKAGE the `groupId'."
        "-DarchetypeArtifactId=maven-archetype-quickstart"
        "-DinteractiveMode=false"))
 
+;;;###autoload
+(defun mvn-package-and-execute ()
+  "Package and execute the current project."
+  (mvn "package")
+  (mvn "exec:java"))
+
 (provide 'mvn)
 
 ;;; mvn.el ends here
