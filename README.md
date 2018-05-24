@@ -2,13 +2,16 @@
 
 By Andrew Gwozdziewycz, licensed under the [GNU GPLv3][2]
 
-This is a few helpers for using compilation mode in Emacs with maven.
+Changes / updates by Joost Kremers.
+
+This package provides a few helpers for using maven from within Emacs.
 
 ### Customizations
 
-If you're maven is in a nonstandard location, `(setq mvn-command "/path/to/ant -emacs")`
-
-If you're build doesn't use "pom.xml", you'll need to modify `mvn-command` to end with with `-f` or `--file` and also do `(setq mvn-build-file-name "somethingelse.xml")` so that the automated project root discovery works correctly.
+- `mvn-command`: The location of the maven executable. Default is `"mvn"`.
+- `mvn-build-file-name`: Use an alternative build file name. Default is to use `"pom.xml"`.
+- `mvn-project-root-dir`: Use an alternative project root. Default is to move up the directory tree searching for `mvn-build-file-name`.
+- `mvn-show-output-buffer-on-error`: Show the output buffer if `mvn` returns with an error code. 
 
 ### Installation
 
@@ -26,13 +29,17 @@ The basic operation is to invoke `M-x mvn`, which will ask you for a goal.
 
 `M-x mvn-test` will run the standard `mvn test`
 
+`M-x mvn-create-project` will create an mvn project in the current directory.
+
+`M-x mvn-package-and-execute` will execute `mvn package` followed by `mvn exec:java`.
+
 `mvn` can be called non-interactively too, in which case it's called as such: `(mvn "sometask")`. This means that you can can define your own functions like `mvn-compile` for your projects:
 
     (defun mvn-compile-full ()
         (interactive)
         (mvn "dependency:sources"))
         
-`M-x mvn-kill-cache` kills the internal cache used to speed up the auto-completion of ant tasks in the mini-buffer.
+By default, `(mvn <task>)` searches for the root directory of the current buffer's project before calling `mvn`. If you don't want this (and thus execute the `mvn` command in the current buffer's `default-directory`), bind `mvn-dont-search-root` to `t` before calling `(mvn <task>)`.
 
 ### Tips
 
@@ -46,16 +53,6 @@ When the compilation buffer looks garbled, it usually from the wrong terminal es
             (if (boundp 'compilation-filter-start)
                 (ansi-color-apply-on-region compilation-filter-start (point))))))
       (add-hook 'compilation-filter-hook 'colorize-compilation-buffer))
-
-### Future
-
-In the future, I'd really like to build a more general mode for working with Java code--something like [malabar-mode][3], but without a lot of the semantic stuff it does. Minimal requirements:
-
-    1. It needs to support navigation really well (jtags does a decent to good job here)
-    2. It needs to be able to find code in source jars (if available)
-    3. It needs to have a built in way to launch a REPL (clojure, jython, sisc) for experimental programming purposes
-    4. Run test at point/file
-    5. List possible maven goals
 
 [0]: http://gnu.org/software/emacs
 [1]: http://maven.apache.org
