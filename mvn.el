@@ -462,7 +462,10 @@ overridden with a file-local or directory-local variable."
                             mvn-other-plugins)
   "List of all plugins and goals.")
 
-(defun mvn-get-task (directory)
+(defun mvn-get-task ()
+  "Ask for a task to be executed.
+Additional arguments can also be provided, separated by
+`crm-separator'."
   (let ((task (completing-read-multiple (concat "Goal (default): ")
                                         mvn-plugins-and-goals nil
                                         nil nil 'mvn-task-history)))
