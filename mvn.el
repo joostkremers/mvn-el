@@ -570,12 +570,17 @@ PROJECT is the `artifactId', PACKAGE the `groupId'."
          "-DinteractiveMode=false")))
 
 ;;;###autoload
-(defun mvn-package-and-execute ()
-  "Package and execute the current project."
+(defun mvn-package ()
+  "Package the current project."
   (interactive)
-  (mvn "package")
-  (mvn "exec:java")
-  (display-buffer mvn-buffer))
+  (mvn "package"))
+
+;;;###autoload
+(defun mvn-execute ()
+  "Run the current project."
+  (interactive)
+  (display-buffer mvn-buffer)
+  (mvn "exec:java"))
 
 (provide 'mvn)
 
