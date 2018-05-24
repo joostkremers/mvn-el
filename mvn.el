@@ -505,8 +505,8 @@ Additional arguments can also be provided, separated by
 (defun mvn-build-file-arg ()
   "Return a build file argument for the current project.
 This is either nil if the default build file name \"pom.xml\" is
-used.  Otherwise, a list of the form `(\"-f\" <build-file-name>)'
-is returned."
+used, or a list of the form `(\"-f\" \"<build-file-name>\")', for
+use within the function `mvn'."
   (if mvn-build-file-name
       (list "--file" mvn-build-file-name)))
 
