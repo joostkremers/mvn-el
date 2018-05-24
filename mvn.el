@@ -41,13 +41,27 @@ This can contain just the name of the executable or its full path."
   :group 'maven
   :type 'string)
 
-(defcustom mvn-build-file-name "pom.xml"
+(defcustom mvn-build-file-name nil
   "Name of the maven build file.
-The value of this variable is the default value.  It can be
-overridden with a file-local or directory-local variable."
+If nil, use the default name \"pom.xml\".  Note that this
+variable is buffer-local and can be overridden with a file-local
+or directory-local variable."
   :group 'maven
-  :type 'string)
+  :type '(choice (const :tag "Use 'pom.xml'" nil)
+                 (string :tag "Use custom build file")))
 (make-variable-buffer-local 'mvn-build-file-name)
+
+(defcustom mvn-project-root-dir nil
+  "Directory containing the project's build file.
+If nil, use the default root dir (i.e., move up in the directory
+  tree searching for `mvn-build-file-name'.  If provided a
+  directory, it should end in a slash.  This variable is
+  buffer-local and can be overridden with a file-local or
+  directory-local variable."
+  :group 'maven
+  :type '(choice (const :tag "Use standard project root directory" nil)
+                 (directory :tag "Use custom project root directory")))
+(make-variable-buffer-local 'mvn-project-root-dir)
 
 (defcustom mvn-show-output-buffer-on-error t
   "Show the maven output buffer when a command returns with an error."
@@ -482,7 +496,16 @@ Additional arguments can also be provided, separated by
 
 (defun mvn-find-root (dir)
   "Find the root directory of the project to which DIR belongs."
-  (locate-dominating-file dir mvn-build-file-name))
+  (or mvn-project-root-dir
+      (locate-dominating-file dir mvn-build-file-name)))
+
+(defun mvn-get-build-file-arg ()
+  "Return a build file argument for the current project.
+This is either nil if the default build file name\"pom.xml\" is
+used.  Otherwise, a list of the form `(\"-f\" <build-file-name>)'
+is returned."
+  (if mvn-build-file-name
+      (list "--file" mvn-build-file-name)))
 
 ;;;###autoload
 (defun mvn (&optional task &rest args)
@@ -495,7 +518,7 @@ ARGS are added to the mvn command call."
           (setq mvn-last-task task)
           (unless (listp task)
             (setq task (list task)))
-          (let ((res (apply #'call-process mvn-command nil mvn-buffer t (append task args))))
+          (let ((res (apply #'call-process mvn-command nil mvn-buffer t (append (mvn-build-file-arg) task args))))
             (if (= res 0)
                 (message "[mvn] `%s %s' successful." mvn-command task)
               (when mvn-show-output-buffer-on-error
