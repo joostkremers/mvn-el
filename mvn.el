@@ -462,30 +462,6 @@ overridden with a file-local or directory-local variable."
                             mvn-other-plugins)
   "List of all plugins and goals.")
 
-;;(defalias 'mvn-tasks-default 'maven-plugins-and-goals)
-;; (defvar mvn-tasks-default '("compile" "test" "clean"))
-
-(defun mvn-find-tasks (directory)
-  (let ((output (shell-command-to-string (concat *mvn-tasks-command* " "
-                                                 directory "/"
-                                                 mvn-build-file-name))))
-    (message output)
-    (if (> (length output) 0)
-        (mapcar (lambda (x) (replace-regexp-in-string ".*<target.*name=\"\\([^\-][^\"]*\\).*" "\\1" x))
-                (split-string output "[\n]"))
-      nil)))
-
-;; should cache tasks from the build file at some point
-(defun mvn-tasks (directory)
-  (let ((tasks (assoc-string directory *mvn-tasks-cache*)))
-    (cdr
-     (or tasks
-         (progn
-           (let ((newtasks (or (mvn-find-tasks directory) mvn-plugins-and-goals)))
-             (setq *mvn-tasks-cache*
-                   (cons (cons directory newtasks) *mvn-tasks-cache*))
-             newtasks))))))
-
 (defun mvn-get-task (directory)
   (let ((task (completing-read-multiple (concat "Goal (default): ")
                                         mvn-plugins-and-goals nil
