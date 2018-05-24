@@ -574,7 +574,8 @@ PROJECT is the `artifactId', PACKAGE the `groupId'."
   "Package and execute the current project."
   (interactive)
   (mvn "package")
-  (mvn "exec:java"))
+  (mvn "exec:java")
+  (display-buffer mvn-buffer))
 
 (provide 'mvn)
 
