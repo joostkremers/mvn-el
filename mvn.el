@@ -72,6 +72,7 @@ If nil, use the default root dir (i.e., move up in the directory
 (defvar-local mvn-last-task "compile" "Last mvn task.")
 (defvar mvn-task-history nil "History list of read task(s).")
 (defvar mvn-buffer (get-buffer-create " *maven-output*") "Maven output buffer.")
+(defvar mvn-dont-search-root nil "If set, `mvn' does not search for a project root.")
 
 (defvar mvn-default-phases '("validate"
                           "initialize"
@@ -496,8 +497,10 @@ Additional arguments can also be provided, separated by
 
 (defun mvn-find-root (dir)
   "Find the root directory of the project to which DIR belongs."
-  (or mvn-project-root-dir
-      (locate-dominating-file dir mvn-build-file-name)))
+  (if mvn-dont-search-root
+      default-directory
+    (or mvn-project-root-dir
+        (locate-dominating-file dir mvn-build-file-name))))
 
 (defun mvn-get-build-file-arg ()
   "Return a build file argument for the current project.
@@ -559,11 +562,12 @@ With PREFIX argument non-nil, ask for a test to run."
   "Create a maven project in the current directory.
 PROJECT is the `artifactId', PACKAGE the `groupId'."
   (interactive "sProject: \nsPackage: ")
-  (mvn "archetype:generate"
-       (format "-DgroupId=%s" package)
-       (format "-DartifactId=%s" project)
-       "-DarchetypeArtifactId=maven-archetype-quickstart"
-       "-DinteractiveMode=false"))
+  (let ((mvn-dont-search-root t))
+    (mvn "archetype:generate"
+         (format "-DgroupId=%s" package)
+         (format "-DartifactId=%s" project)
+         "-DarchetypeArtifactId=maven-archetype-quickstart"
+         "-DinteractiveMode=false")))
 
 ;;;###autoload
 (defun mvn-package-and-execute ()
