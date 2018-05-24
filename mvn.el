@@ -515,6 +515,8 @@ use within the function `mvn'."
   "Run \"mvn TASK\" in the current project's root directory.
 ARGS are added to the mvn command call."
   (interactive)
+  (with-current-buffer mvn-buffer
+    (erase-buffer))
   (let ((default-directory (mvn-find-root default-directory)))
     (if default-directory
         (let ((task (or task (mvn-get-task))))
