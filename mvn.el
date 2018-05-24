@@ -533,4 +533,4 @@ With PREFIX argument non-nil, ask for a test to run."
 
 (provide 'mvn)
 
-;;; maven.el ends here
+;;; mvn.el ends here
