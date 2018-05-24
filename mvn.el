@@ -534,3 +534,7 @@ With PREFIX argument non-nil, ask for a test to run."
 (provide 'mvn)
 
 ;;; mvn.el ends here
+
+;; Local Variables:
+;; eval: (nameless-mode 1)
+;; End:
