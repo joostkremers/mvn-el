@@ -500,7 +500,7 @@ Additional arguments can also be provided, separated by
   (if mvn-dont-search-root
       default-directory
     (or mvn-project-root-dir
-        (locate-dominating-file dir mvn-build-file-name))))
+        (locate-dominating-file dir (or mvn-build-file-name "pom.xml")))))
 
 (defun mvn-build-file-arg ()
   "Return a build file argument for the current project.
