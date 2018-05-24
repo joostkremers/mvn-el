@@ -33,12 +33,24 @@
 
 ;;; Code:
 
-(defvar mvn-last-task "compile")
-(defvar mvn-build-file-name "pom.xml")
-(defvar mvn-command "mvn")
+(defgroup mvn nil "Maven helper functions" :group 'tools :prefix "mvn-")
 
-(defvar mvn-task-history nil
-  "History list of read task(s)")
+(defcustom mvn-command "mvn"
+  "Name of the mvn executable.
+This can contain just the name of the executable or its full path."
+  :group 'maven
+  :type 'string)
+
+(defcustom mvn-build-file-name "pom.xml"
+  "Name of the maven build file.
+The value of this variable is the default value.  It can be
+overridden with a file-local or directory-local variable."
+  :group 'maven
+  :type 'string)
+(make-variable-buffer-local 'mvn-build-file-name)
+
+(defvar-local mvn-last-task "compile" "Last mvn task.")
+(defvar mvn-task-history nil "History list of read task(s).")
 
 (defvar mvn-default-phases '("validate"
                           "initialize"
