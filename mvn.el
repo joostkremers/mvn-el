@@ -1,9 +1,12 @@
-;;; maven.el --- helpers for compiling with maven
+;;; mvn.el --- helpers for compiling with maven  -*- lexical-binding: t -*-
 
 ;; Copyright (C) 2013 Andrew Gwozdziewycz <git@apgwoz.com>
+;; Copyright (C) 2018 Joost Kremers <joostkremers@fastmail.fm>
+;; All rights reserved.
 
 ;; Author: Andrew Gwozdziewycz <git@apgwoz.com>
-;; URL : https://github.com/apgwoz/mvn-el
+;; Maintainer: Joost Kremers <joostkremers@fastmail.fm>
+;; URL : https://github.com/joostkremers/mvn-el
 ;; Version: 0.1
 ;; Keywords: compilation, maven, java
 
@@ -23,6 +26,12 @@
 ;; along with GNU Emacs; see the file COPYING.  If not, write to the
 ;; Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 ;; Boston, MA 02111-1307, USA.
+
+;;; Commentary:
+
+;; A few helper functions for running mvn from within Emacs.
+
+;;; Code:
 
 (defvar mvn-last-task "compile")
 (defvar mvn-build-file-name "pom.xml")
