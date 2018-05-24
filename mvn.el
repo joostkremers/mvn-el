@@ -473,9 +473,9 @@ Additional arguments can also be provided, separated by
         (mapconcat 'identity task " ")
       "")))
 
-(defun mvn-find-root (indicator)
-  (let ((cwd default-directory))
-    (locate-dominating-file cwd mvn-build-file-name)))
+(defun mvn-find-root (dir)
+  "Find the root directory of the project to which DIR belongs."
+  (locate-dominating-file dir mvn-build-file-name))
 
 ;;;###autoload
 (defun mvn-kill-cache ()
