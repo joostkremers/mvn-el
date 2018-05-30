@@ -63,12 +63,6 @@ If nil, use the default root dir (i.e., move up in the directory
                  (directory :tag "Use custom project root directory")))
 (make-variable-buffer-local 'mvn-project-root-dir)
 
-(defcustom mvn-show-output-buffer-on-error t
-  "Show the maven output buffer when a command returns with an error."
-  :group 'maven
-  :type '(choice (const :tag "Show the output buffer on error" t)
-                 (const :tag "Do not show the output buffer on error" nil)))
-
 (defvar-local mvn-last-task "compile" "Last mvn task.")
 (defvar mvn-task-history nil "History list of read task(s).")
 (defvar mvn-buffer (get-buffer-create " *maven-output*") "Maven output buffer.")
@@ -535,12 +529,7 @@ ARGS are added to the mvn command call."
           (setq mvn-last-task task)
           (unless (listp task)
             (setq task (list task)))
-          (let ((res (apply #'call-process mvn-command nil mvn-buffer t (append (mvn-build-file-arg) task args))))
-            (if (= res 0)
-                (message "[mvn] `%s %s' successful." mvn-command task)
-              (when mvn-show-output-buffer-on-error
-                (display-buffer mvn-buffer))
-              (error "[mvn] `%s %s' exited with non-zero exit status" mvn-command task))))
+          (compile (mapconcat #'identity (append (list mvn-command) task args) " ") t))
       (error "[mvn] Could not find a maven project for the current buffer"))))
 
 ;;;###autoload
