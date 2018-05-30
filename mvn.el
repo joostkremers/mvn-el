@@ -511,6 +511,18 @@ use within the function `mvn'."
       (list "--file" mvn-build-file-name)))
 
 ;;;###autoload
+(defun mvn-package-identifier (&optional dir)
+  "Return a package identifier for DIR.
+If DIR is nil, use the value of `default-directory'."
+  (or dir
+      (setq dir default-directory))
+  (save-match-data
+    (if (string-match "\\(?:.*\\)/java/\\(.*\\)" dir)
+        (let ((package-dir (match-string 1 dir)))
+          (if package-dir
+              (mapconcat #'identity (split-string package-dir "/" t) "."))))))
+
+;;;###autoload
 (defun mvn (&optional task &rest args)
   "Run \"mvn TASK\" in the current project's root directory.
 ARGS are added to the mvn command call."
