@@ -65,7 +65,6 @@ If nil, use the default root dir (i.e., move up in the directory
 
 (defvar-local mvn-last-task "compile" "Last mvn task.")
 (defvar mvn-task-history nil "History list of read task(s).")
-(defvar mvn-buffer (get-buffer-create " *maven-output*") "Maven output buffer.")
 (defvar mvn-dont-search-root nil "If set, `mvn' does not search for a project root.")
 
 (defvar mvn-default-phases '("validate"
@@ -521,8 +520,6 @@ If DIR is nil, use the value of `default-directory'."
   "Run \"mvn TASK\" in the current project's root directory.
 ARGS are added to the mvn command call."
   (interactive)
-  (with-current-buffer mvn-buffer
-    (erase-buffer))
   (let ((default-directory (mvn-find-root default-directory)))
     (if default-directory
         (let ((task (or task (mvn-get-task))))
@@ -584,7 +581,6 @@ PROJECT is the `artifactId', PACKAGE the `groupId'."
 This calls \"mvn exec:java\", on the assumption that the main
 class is specified in pom.xml."
   (interactive)
-  (display-buffer mvn-buffer)
   (mvn "exec:java"))
 
 (provide 'mvn)
