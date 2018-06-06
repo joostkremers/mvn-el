@@ -580,7 +580,9 @@ PROJECT is the `artifactId', PACKAGE the `groupId'."
 
 ;;;###autoload
 (defun mvn-execute ()
-  "Run the current project."
+  "Execute the current project.
+This calls \"mvn exec:java\", on the assumption that the main
+class is specified in pom.xml."
   (interactive)
   (display-buffer mvn-buffer)
   (mvn "exec:java"))
