@@ -570,18 +570,55 @@ PROJECT is the `artifactId', PACKAGE the `groupId'."
          "-DinteractiveMode=false")))
 
 ;;;###autoload
-(defun mvn-package ()
-  "Package the current project."
+(defun mvn-new-class (name)
+  "Create a new class named NAME."
+  (interactive "sClass name: ")
+  (let ((file (format "%s.java" name)))
+    (unless (file-exists-p file)
+      (with-temp-file file
+        (insert (format "pkg %s;\n\n" (mvn-package-identifier)))
+        (insert (format "public class %s {\n\n}" name))))
+    (find-file file)))
+
+;;;###autoload
+(defun mvn-package-project ()
+  "Package the current project.
+This expects all relevant arguments to be specified in the
+project's pom.xml."
   (interactive)
   (mvn "package"))
 
 ;;;###autoload
-(defun mvn-execute ()
-  "Execute the current project.
-This calls \"mvn exec:java\", on the assumption that the main
-class is specified in pom.xml."
+(defun mvn-run-project ()
+  "Run the current project.
+This runs \"mvn exec:java\" and expects all relevant arguments to
+be specified in the project's pom.xml."
   (interactive)
   (mvn "exec:java"))
+
+(defun mvn-mainClass-arg (file)
+  "Create a mainClass argument for file.
+Return a string of the form \"-Dexec.mainClass=<class>\", where
+<class> is derived from FILE by taking the non-directory part and
+removing the extension."
+  (format "-Dexec.mainClass=%s.%s"
+          (mvn-package-identifier default-directory)
+          (file-name-sans-extension (file-name-nondirectory file))))
+
+;;;###autoload
+(defun mvn-package ()
+  "Package the current file.
+This passes \"-Dexec.mainClass=<current-file>\" to mvn."
+  (interactive)
+  (mvn "package" (mvn-mainClass-arg (buffer-file-name))))
+
+;;;###autoload
+(defun mvn-run ()
+  "Run the current file.
+This calls \"mnv exec:java\" with
+\"-Dexec.mainClass=<current-file>\"."
+  (interactive)
+  (mvn "exec:java" (mvn-mainClass-arg (buffer-file-name))))
 
 (provide 'mvn)
 
