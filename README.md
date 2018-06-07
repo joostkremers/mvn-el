@@ -54,7 +54,7 @@ The basic operation is to invoke `M-x mvn`, which will ask you for a goal.
 
 `M-x mvn-create-project` will create an mvn project in the current directory.
 
-`M-x mvn-package-and-execute` will execute `mvn package` followed by `mvn exec:java`.
+A few more such commands are defined in `mvn.el`.
 
 `mvn` can be called non-interactively too, in which case it's called as such: `(mvn "sometask")`. This means that you can can define your own functions like `mvn-compile` for your projects:
 
