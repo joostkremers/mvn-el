@@ -75,7 +75,6 @@ By default, `(mvn <task>)` searches for the root directory of the current buffer
 - `mvn-command`: The location of the maven executable. Default is `"mvn"`.
 - `mvn-build-file-name`: Use an alternative build file name. Default is to use `"pom.xml"`.
 - `mvn-project-root-dir`: Use an alternative project root. Default is to move up the directory tree searching for `mvn-build-file-name`.
-- `mvn-show-output-buffer-on-error`: Show the output buffer if `mvn` returns with an error code. 
 
 
 ## Tips ##
