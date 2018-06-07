@@ -6,18 +6,18 @@ Changes / updates by Joost Kremers.
 
 This package provides a few helpers for using maven from within Emacs.
 
-### Customizations
+## Customizations
 
 - `mvn-command`: The location of the maven executable. Default is `"mvn"`.
 - `mvn-build-file-name`: Use an alternative build file name. Default is to use `"pom.xml"`.
 - `mvn-project-root-dir`: Use an alternative project root. Default is to move up the directory tree searching for `mvn-build-file-name`.
 - `mvn-show-output-buffer-on-error`: Show the output buffer if `mvn` returns with an error code. 
 
-### Installation
+## Installation
 
 Put mvn.el in your `load-path` and add `(require 'mvn)` to your .emacs
 
-### Usage
+## Usage
 
 The basic operation is to invoke `M-x mvn`, which will ask you for a goal.
 
@@ -41,7 +41,7 @@ The basic operation is to invoke `M-x mvn`, which will ask you for a goal.
         
 By default, `(mvn <task>)` searches for the root directory of the current buffer's project before calling `mvn`. If you don't want this (and thus execute the `mvn` command in the current buffer's `default-directory`), bind `mvn-dont-search-root` to `t` before calling `(mvn <task>)`.
 
-### Tips
+## Tips
 
 When the compilation buffer looks garbled, it usually from the wrong terminal escape sequences.  You may insert following code into your init script so that compilation buffer can correctly shows colored messages [ansi-color][4]:
 
