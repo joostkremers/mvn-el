@@ -62,7 +62,7 @@ A few more such commands are defined in `mvn.el`.
         (interactive)
         (mvn "dependency:sources"))
         
-By default, `(mvn <task>)` searches for the root directory of the current buffer's project before calling `mvn`. If you don't want this (and thus execute the `mvn` command in the current buffer's `default-directory`), bind `mvn-dont-search-root` to `t` before calling `(mvn <task>)`.
+By default, `(mvn <task>)` searches for the root directory of the current buffer's project before calling `mvn`. If you don't want this, let-bind `mvn-dont-search-root` to `t` before calling `(mvn <task>)`. This causes `mvn` to be executed in the current buffer's `default-directory`. (This is what `mvn-create-project` does, for example.)
 
 
 ## Minor mode and keymap ##
