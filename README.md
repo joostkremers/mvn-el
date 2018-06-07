@@ -34,6 +34,10 @@ The basic operation is to invoke `M-x mvn`, which will ask you for a goal.
         
 By default, `(mvn <task>)` searches for the root directory of the current buffer's project before calling `mvn`. If you don't want this (and thus execute the `mvn` command in the current buffer's `default-directory`), bind `mvn-dont-search-root` to `t` before calling `(mvn <task>)`.
 
+## Minor mode and keymap ##
+
+`mvn.el' provides a minor mode `mvn-mode' and a keymap `mvn-mode-map'. Both are effectively empty, but the minor mode can be used to load `mvn.el' (if you use something like `use-package` to delay loading) and the keymap can be used to bind keys to the various `mvn-` commands. `mvn` doesn't bind any keys by default, because most people's keymaps are already cluttered as it is.
+
 ## Customizations ##
 
 - `mvn-command`: The location of the maven executable. Default is `"mvn"`.
