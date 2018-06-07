@@ -1,14 +1,44 @@
-# mvn-el: [Emacs][0] things for [mvn][1]
+# mvn-el: [Emacs][0] things for [mvn][1] #
 
 By [Andrew Gwozdziewycz](https://github.com/apg/mvn-el), licensed under the [GNU GPLv3][2]
 
 Changes / updates by Joost Kremers.
 
-This package provides a few helpers for using maven from within Emacs.
+This package provides a few helper functions for using maven from within Emacs.
+
 
 ## Installation ##
 
-Put mvn.el in your `load-path` and add `(require 'mvn)` to your .emacs
+Put mvn.el in your `load-path` and add `(require 'mvn)` to your init file (`~/emacs.d/init.el`).
+
+Alternatively, use `use-package`:
+
+```
+(use-package mvn
+  :load-path "~/src/Forks/mvn-el/"
+  :hook (java-mode . mvn-mode)
+  :bind (:map mvn-mode-map
+              ("s-m" . mvn-hydra/body))
+  :config
+  (defhydra mvn-hydra (:hint nil :exit t)
+    "
+  ^ ^                    ^ ^                       ╭───────┐
+  ^ ^ Project            ^ ^ File                  │ Maven │
+╭─^─^────────────────────^─^───────────────────────┴───────╯
+  _N_ New project        _n_ New class
+  _P_ Package project    _p_ Package file
+  _R_ Run project        _r_ Run file
+
+  _q_ Quit"
+    ("N" mvn-create-project)
+    ("P" mvn-package-project)
+    ("R" mvn-run-project)
+    ("n" mvn-new-class)
+    ("p" mvn-package)
+    ("r" mvn-run)
+    ("q" nil)))
+```
+
 
 ## Usage ##
 
@@ -34,9 +64,11 @@ The basic operation is to invoke `M-x mvn`, which will ask you for a goal.
         
 By default, `(mvn <task>)` searches for the root directory of the current buffer's project before calling `mvn`. If you don't want this (and thus execute the `mvn` command in the current buffer's `default-directory`), bind `mvn-dont-search-root` to `t` before calling `(mvn <task>)`.
 
+
 ## Minor mode and keymap ##
 
 `mvn.el' provides a minor mode `mvn-mode' and a keymap `mvn-mode-map'. Both are effectively empty, but the minor mode can be used to load `mvn.el' (if you use something like `use-package` to delay loading) and the keymap can be used to bind keys to the various `mvn-` commands. `mvn` doesn't bind any keys by default, because most people's keymaps are already cluttered as it is.
+
 
 ## Customizations ##
 
@@ -44,6 +76,7 @@ By default, `(mvn <task>)` searches for the root directory of the current buffer
 - `mvn-build-file-name`: Use an alternative build file name. Default is to use `"pom.xml"`.
 - `mvn-project-root-dir`: Use an alternative project root. Default is to move up the directory tree searching for `mvn-build-file-name`.
 - `mvn-show-output-buffer-on-error`: Show the output buffer if `mvn` returns with an error code. 
+
 
 ## Tips ##
 
