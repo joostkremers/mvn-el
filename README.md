@@ -15,7 +15,7 @@ Alternatively, use `use-package`:
 
 ```
 (use-package mvn
-  :load-path "~/src/Forks/mvn-el/"
+  :load-path "~/<path>/<to>/mvn-el/"
   :hook (java-mode . mvn-mode)
   :bind (:map mvn-mode-map
               ("s-m" . mvn-hydra/body))
