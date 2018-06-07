@@ -1,6 +1,6 @@
 # mvn-el: [Emacs][0] things for [mvn][1]
 
-By Andrew Gwozdziewycz, licensed under the [GNU GPLv3][2]
+By [Andrew Gwozdziewycz](https://github.com/apg/mvn-el), licensed under the [GNU GPLv3][2]
 
 Changes / updates by Joost Kremers.
 
