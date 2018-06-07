@@ -503,7 +503,6 @@ use within the function `mvn'."
   (if mvn-build-file-name
       (list "--file" mvn-build-file-name)))
 
-;;;###autoload
 (defun mvn-package-identifier (&optional dir)
   "Return a package identifier for DIR.
 If DIR is nil, use the value of `default-directory'."
@@ -515,7 +514,6 @@ If DIR is nil, use the value of `default-directory'."
           (if package-dir
               (mapconcat #'identity (split-string package-dir "/" t) "."))))))
 
-;;;###autoload
 (defun mvn (&optional task &rest args)
   "Run \"mvn TASK\" in the current project's root directory.
 ARGS are added to the mvn command call."
@@ -529,25 +527,21 @@ ARGS are added to the mvn command call."
           (compile (mapconcat #'identity (append (list mvn-command) task args) " ") t))
       (error "[mvn] Could not find a maven project for the current buffer"))))
 
-;;;###autoload
 (defun mvn-last ()
   "Rerun the last maven task in the current buffer."
   (interactive)
   (mvn (or mvn-last-task "")))
 
-;;;###autoload
 (defun mvn-compile ()
   "Compile the current project."
   (interactive)
   (mvn "compile"))
 
-;;;###autoload
 (defun mvn-clean ()
   "Clean the current project."
   (interactive)
   (mvn "clean"))
 
-;;;###autoload
 (defun mvn-test (prefix)
   "Run the current project's test suite.
 With PREFIX argument non-nil, ask for a test to run."
@@ -557,7 +551,6 @@ With PREFIX argument non-nil, ask for a test to run."
     (let ((test (read-string "Test: ")))
       (mvn "test" (concat "-Dtest=" test)))))
 
-;;;###autoload
 (defun mvn-create-project (project package)
   "Create a maven project in the current directory.
 PROJECT is the `artifactId', PACKAGE the `groupId'."
@@ -569,7 +562,6 @@ PROJECT is the `artifactId', PACKAGE the `groupId'."
          "-DarchetypeArtifactId=maven-archetype-quickstart"
          "-DinteractiveMode=false")))
 
-;;;###autoload
 (defun mvn-new-class (name)
   "Create a new class named NAME."
   (interactive "sClass name: ")
@@ -580,7 +572,6 @@ PROJECT is the `artifactId', PACKAGE the `groupId'."
         (insert (format "public class %s {\n\n}" name))))
     (find-file file)))
 
-;;;###autoload
 (defun mvn-package-project ()
   "Package the current project.
 This expects all relevant arguments to be specified in the
@@ -588,7 +579,6 @@ project's pom.xml."
   (interactive)
   (mvn "package"))
 
-;;;###autoload
 (defun mvn-run-project ()
   "Run the current project.
 This runs \"mvn exec:java\" and expects all relevant arguments to
@@ -605,20 +595,32 @@ removing the extension."
           (mvn-package-identifier default-directory)
           (file-name-sans-extension (file-name-nondirectory file))))
 
-;;;###autoload
 (defun mvn-package ()
   "Package the current file.
 This passes \"-Dexec.mainClass=<current-file>\" to mvn."
   (interactive)
   (mvn "package" (mvn-mainClass-arg (buffer-file-name))))
 
-;;;###autoload
 (defun mvn-run ()
   "Run the current file.
 This calls \"mnv exec:java\" with
 \"-Dexec.mainClass=<current-file>\"."
   (interactive)
   (mvn "exec:java" (mvn-mainClass-arg (buffer-file-name))))
+
+;; We define a minor mode and a keymap, even though both are empty.  The minor
+;; mode makes it easy to load `mvn.el', the keymap allows one to bind keys that
+;; need not be available globally.
+(defvar mvn-mode-map
+  (make-sparse-keymap)
+  "Keymap for mvn-mode.
+This keymap does not define any keys by default, but can be used
+to bind keys for calling mvn commands.")
+
+;;;###autoload
+(define-minor-mode mvn-mode
+  "Minor mode for interacting with mvn."
+  :init-value nil :lighter "mvn" :global nil)
 
 (provide 'mvn)
 
