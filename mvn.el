@@ -569,7 +569,7 @@ PROJECT is the `artifactId', PACKAGE the `groupId'."
     (unless (file-exists-p file)
       (with-temp-file file
         (insert (format "package %s;\n\n" (mvn-package-identifier)))
-        (insert (format "public class %s {\n\n}" name))))
+        (insert (format "public class %s {\n\n}\n" name))))
     (find-file file)))
 
 (defun mvn-package-project ()
