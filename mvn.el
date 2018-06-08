@@ -568,7 +568,7 @@ PROJECT is the `artifactId', PACKAGE the `groupId'."
   (let ((file (format "%s.java" name)))
     (unless (file-exists-p file)
       (with-temp-file file
-        (insert (format "pkg %s;\n\n" (mvn-package-identifier)))
+        (insert (format "package %s;\n\n" (mvn-package-identifier)))
         (insert (format "public class %s {\n\n}" name))))
     (find-file file)))
 
