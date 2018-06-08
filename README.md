@@ -79,7 +79,7 @@ By default, `(mvn <task>)` searches for the root directory of the current buffer
 
 ## Tips ##
 
-When the compilation buffer looks garbled, it usually from the wrong terminal escape sequences.  You may insert following code into your init script so that compilation buffer can correctly shows colored messages [ansi-color][4]:
+When the compilation buffer looks garbled, it is usually from the wrong terminal escape sequences.  You may insert the following code into your init script so that the compilation buffer can correctly shows colored messages [ansi-color][4]:
 
     (ignore-errors
       (require 'ansi-color)
