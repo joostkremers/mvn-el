@@ -551,6 +551,7 @@ With PREFIX argument non-nil, ask for a test to run."
     (let ((test (read-string "Test: ")))
       (mvn "test" (concat "-Dtest=" test)))))
 
+;;;###autoload
 (defun mvn-create-project (project package)
   "Create a maven project in the current directory.
 PROJECT is the `artifactId', PACKAGE the `groupId'."
@@ -562,6 +563,7 @@ PROJECT is the `artifactId', PACKAGE the `groupId'."
          "-DarchetypeArtifactId=maven-archetype-quickstart"
          "-DinteractiveMode=false")))
 
+;;;###autoload
 (defun mvn-new-class (name)
   "Create a new class named NAME."
   (interactive "sClass name: ")
