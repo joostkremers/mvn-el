@@ -9,6 +9,7 @@
 ;; URL : https://github.com/joostkremers/mvn-el
 ;; Version: 0.1
 ;; Keywords: compilation, maven, java
+;; Package-Requires: ((emacs "26.1"))
 
 ;; This file is NOT part of GNU Emacs
 
@@ -485,7 +486,7 @@ Additional arguments can also be provided, separated by
                                         mvn-plugins-and-goals nil
                                         nil nil 'mvn-task-history)))
     (if (> (length task) 0)
-        (mapconcat 'identity task " ")
+        (string-join task " ")
       "")))
 
 (defun mvn-find-root (dir)
@@ -512,7 +513,7 @@ If DIR is nil, use the value of `default-directory'."
     (if (string-match "\\(?:.*\\)/java/\\(.*\\)" dir)
         (let ((package-dir (match-string 1 dir)))
           (if package-dir
-              (mapconcat #'identity (split-string package-dir "/" t) "."))))))
+              (string-join (split-string package-dir "/" t) "."))))))
 
 (defun mvn (&optional task &rest args)
   "Run \"mvn TASK\" in the current project's root directory.
@@ -524,7 +525,7 @@ ARGS are added to the mvn command call."
           (setq mvn-last-task task)
           (unless (listp task)
             (setq task (list task)))
-          (compile (mapconcat #'identity (append (list mvn-command) task args) " ") t))
+          (compile (string-join (append (list mvn-command) task args) " ") t))
       (error "[mvn] Could not find a maven project for the current buffer"))))
 
 (defun mvn-last ()
