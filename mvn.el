@@ -67,6 +67,7 @@ If nil, use the default root dir (i.e., move up in the directory
 (defvar-local mvn-last-task "compile" "Last mvn task.")
 (defvar mvn-task-history nil "History list of read task(s).")
 (defvar mvn-dont-search-root nil "If set, `mvn' does not search for a project root.")
+(defvar mvn-select-compilation-buffer nil "If set, `mvn' switches to the compilation buffer.")
 
 (defvar mvn-default-phases '("validate"
                           "initialize"
@@ -525,7 +526,10 @@ ARGS are added to the mvn command call."
           (setq mvn-last-task task)
           (unless (listp task)
             (setq task (list task)))
-          (compile (string-join (append (list mvn-command) task args) " ") t))
+          (compile (string-join (append (list mvn-command) task args) " ") t)
+          (when mvn-select-compilation-buffer
+            (pop-to-buffer "*compilation*")
+            (goto-char (point-max))))
       (error "[mvn] Could not find a maven project for the current buffer"))))
 
 (defun mvn-last ()
@@ -587,7 +591,8 @@ project's pom.xml."
 This runs \"mvn exec:java\" and expects all relevant arguments to
 be specified in the project's pom.xml."
   (interactive)
-  (mvn "exec:java"))
+  (let ((mvn-select-compilation-buffer t))
+    (mvn "exec:java")))
 
 (defun mvn-mainClass-arg (file)
   "Create a mainClass argument for file.
